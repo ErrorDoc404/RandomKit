@@ -36,14 +36,12 @@ const getJoke = async (options) => {
         if (!json) throw "Error 01: Unable to access the json content of API"
 
         embed = {
-        embed: {
                 "title": json.setup,
                 "description": json.punchline,
                 "color": 0x6a7cab,
                 "footer": {
                 "text": "Random Jokes | srod"
             }
-        }
         }
 
     }

@@ -12,11 +12,9 @@ const getNeko = async () => {
     if (json.code !== 200) throw "Error 01: Unable to access the json content of API"
 
     return {
-        embed: {
-            color: 0x6a7cab,
-            title: "NEKO",
-            image: { url: json.url }
-        }
+        color: 0x6a7cab,
+        title: "NEKO",
+        image: { url: json.url }
     };
     
 }

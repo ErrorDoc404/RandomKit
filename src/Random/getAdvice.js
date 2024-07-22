@@ -11,7 +11,7 @@ const getAdvice = async () => {
     json = json.data;
     if (!json) throw "Error 01: Unable to access the json content of API"
 
-    return { embed: { description: json.slip.advice, color: 0x6a7cab } };
+    return { description: json.slip.advice, color: 0x6a7cab };
 }
 
 module.exports = getAdvice;
