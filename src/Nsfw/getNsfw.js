@@ -1,31 +1,41 @@
 const axios = require("axios");
 const userAgents = require("../../tools/user-agents.json")
 
-async function getMeme() {
+async function getNsfw() {
 
     let tag = ["pussy", "bdsm", "bdsmgw", "LegalTeens", "drippingwetpussy"]
-    tag = tag[Math.floor(Math.random() * tag.length)]
+    const retryCount = 3;
+    try {
+        const response = await axios(`https://www.reddit.com/r/${tag}/random/.json`, {
+            headers: {
+                'User-Agent': userAgents[Math.floor(Math.random() * userAgents.length)],
+            },
+        });
 
-    let json = await axios(`https://www.reddit.com/r/${tag}/random/.json`, {
-        headers: {
-        "User-Agent": userAgents[Math.floor(Math.random() * userAgents.length)]
+        let jsonData = response.data;
+        if (!jsonData || !jsonData.length) {
+            throw new Error('Error: Unable to access the JSON content of API');
         }
-    });
 
-    json = json.data;
-    if (!json) throw new "Error 01: Unable to access the json content of API"
-    json = json[0].data.children[0].data;
+        const post = jsonData[0].data.children[0].data;
+        if (post && post.post_hint === 'image' && post.url) {
+            return post.url; // Return the image URL
+        } else {
+            throw new Error('Error: No image found in the fetched data');
+        }
+    } catch (error) {
+        console.error('Error fetching random image:', error);
 
-    let content = {
-        embed: {
-        color: 0x6a7cab,
-        image: { url: json.is_video ? "https://freepikpsd.com/wp-content/uploads/2019/10/no-image-png-5-Transparent-Images.png" : json.url },
-        title: json.title
+        // Retry logic
+        if (retryCount > 0) {
+            console.log(`Retrying... (${retryCount} attempts left)`);
+            return getRandomImageFromSubreddit(tag, retryCount - 1);
+        } else {
+            console.error('Maximum retry attempts reached. Returning null.');
+            return null; // Return null if retries are exhausted
         }
     }
-
-    return content;
 }
 
 
-module.exports = getMeme;
+module.exports = getNsfw;
