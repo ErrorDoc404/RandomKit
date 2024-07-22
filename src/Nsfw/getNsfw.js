@@ -1,39 +1,22 @@
 const axios = require("axios");
 const userAgents = require("../../tools/user-agents.json")
 
-async function getNsfw(retryCount = 3) {
+async function getNsfw() {
 
     let tag = ["pussy", "bdsm", "bdsmgw", "LegalTeens", "drippingwetpussy"]
-    try {
-        const response = await axios(`https://www.reddit.com/r/${tag}/random/.json`, {
-            headers: {
-                'User-Agent': userAgents[Math.floor(Math.random() * userAgents.length)],
-            },
-        });
+    tag = tag[Math.floor(Math.random() * tag.length)]
 
-        let jsonData = response.data;
-        if (!jsonData || !jsonData.length) {
-            throw new Error('Error: Unable to access the JSON content of API');
+    let json = await axios(`https://www.reddit.com/r/${tag}/random/.json`, {
+        headers: {
+            "User-Agent": userAgents[Math.floor(Math.random() * userAgents.length)]
         }
+    });
 
-        const post = jsonData[0].data.children[0].data;
-        if (post && post.post_hint === 'image' && post.url) {
-            return post.url; // Return the image URL
-        } else {
-            throw new Error('Error: No image found in the fetched data');
-        }
-    } catch (error) {
-        console.error('Error fetching random image:', error);
+    json = json.data;
+    if (!json) throw new "Error 01: Unable to access the json content of API"
+    json = json[0].data.children[0].data;
 
-        // Retry logic
-        if (retryCount > 0) {
-            console.log(`Retrying... (${retryCount} attempts left)`);
-            return getNsfw(retryCount - 1);
-        } else {
-            console.error('Maximum retry attempts reached. Returning null.');
-            return null; // Return null if retries are exhausted
-        }
-    }
+    return json.is_video ? "https://freepikpsd.com/wp-content/uploads/2019/10/no-image-png-5-Transparent-Images.png" : json.url;
 }
 
 
