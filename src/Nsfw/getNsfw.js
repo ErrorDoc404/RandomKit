@@ -1,10 +1,9 @@
 const axios = require("axios");
 const userAgents = require("../../tools/user-agents.json")
 
-async function getNsfw() {
+async function getNsfw(retryCount = 3) {
 
     let tag = ["pussy", "bdsm", "bdsmgw", "LegalTeens", "drippingwetpussy"]
-    const retryCount = 3;
     try {
         const response = await axios(`https://www.reddit.com/r/${tag}/random/.json`, {
             headers: {
@@ -29,7 +28,7 @@ async function getNsfw() {
         // Retry logic
         if (retryCount > 0) {
             console.log(`Retrying... (${retryCount} attempts left)`);
-            return getRandomImageFromSubreddit(tag, retryCount - 1);
+            return getNsfw(retryCount - 1);
         } else {
             console.error('Maximum retry attempts reached. Returning null.');
             return null; // Return null if retries are exhausted
