@@ -47,7 +47,7 @@ async function getMeme() {
             embeds: [{
                 color: 0x6a7cab,
                 image: { url: post.is_video ? "https://freepikpsd.com/wp-content/uploads/2019/10/no-image-png-5-Transparent-Images.png" : post.url },
-                title: post.title
+                title: tag
             }]
         };
 
