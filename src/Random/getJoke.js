@@ -37,11 +37,11 @@ const getJoke = async (options) => {
 
         embed = {
         embed: {
-            "title": json.setup,
-            "description": json.punchline,
-            "color": "RANDOM",
-            "footer": {
-            "text": "Random Jokes | srod"
+                "title": json.setup,
+                "description": json.punchline,
+                "color": 0x6a7cab,
+                "footer": {
+                "text": "Random Jokes | srod"
             }
         }
         }

@@ -11,7 +11,7 @@ const getFact = async () => {
     json = json.data;
     if (!json) throw "Error 01: Unable to access the json content of API"
 
-    return { embed: { description: json.data, color: "RANDOM" } };
+    return { embed: { description: json.data, color: 0x6a7cab } };
 }
 
 module.exports = getFact;
